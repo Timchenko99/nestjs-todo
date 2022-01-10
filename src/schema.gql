@@ -1,0 +1,36 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""recipe """
+type Todo {
+  id: ID!
+  title: String!
+  description: String
+  creationDate: DateTime!
+  updateDate: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  todo(id: String!): Todo!
+  todos(skip: Int = 0, take: Int = 25): [Todo!]!
+}
+
+type Mutation {
+  addTodo(newTodoData: NewTodoInput!): Todo!
+  removeTodo(id: String!): Boolean!
+}
+
+input NewTodoInput {
+  title: String!
+  description: String
+}
+
+type Subscription {
+  todoAdded: Todo!
+}
