@@ -12,12 +12,9 @@ const pubSub = new PubSub();
 export class TodoResolver {
   constructor(private readonly todoService: TodoService) {}
 
-  @Query(returns => Todo)
-  async todo(@Args('id') id: string): Promise<Todo> {
+  @Query(returns => Todo, {nullable: true})
+  async todo(@Args('id') id: string): Promise<Todo | null> {
     const todo = await this.todoService.findOne(id);
-    if (!todo) {
-      throw new NotFoundException(id);
-    }
     return todo;
   }
 

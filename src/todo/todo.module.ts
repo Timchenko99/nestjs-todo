@@ -8,4 +8,4 @@ import { TodoService } from './todo.service';
   imports: [TypeOrmModule.forFeature([Todo])],
   providers: [TodoService, TodoResolver],
 })
-export class TodosModule {}
+export class TodoModule {}
