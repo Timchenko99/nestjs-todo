@@ -12,7 +12,7 @@ export class TodoDto {
 
   creator: UserDto;
 
-  creationDate?: Date;
+  creationDate: Date;
 
-  updateDate?: Date;
+  updateDate: Date;
 }
