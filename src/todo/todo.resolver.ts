@@ -1,4 +1,3 @@
-import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { NewTodoInput } from './dto/new-todo.input';
@@ -8,36 +7,34 @@ import { TodoService } from './todo.service';
 
 const pubSub = new PubSub();
 
-@Resolver(of => Todo)
+@Resolver((of) => Todo)
 export class TodoResolver {
   constructor(private readonly todoService: TodoService) {}
 
-  @Query(returns => Todo, {nullable: true})
+  @Query((returns) => Todo, { nullable: true })
   async todo(@Args('id') id: string): Promise<Todo | null> {
     const todo = await this.todoService.findOne(id);
     return todo;
   }
 
-  @Query(returns => [Todo])
+  @Query((returns) => [Todo])
   todos(@Args() todosArgs: TodoArgs): Promise<Todo[]> {
     return this.todoService.findAll(todosArgs);
   }
 
-  @Mutation(returns => Todo)
-  async addTodo(
-    @Args('newTodoData') newTodoData: NewTodoInput,
-  ): Promise<Todo> {
+  @Mutation((returns) => Todo)
+  async addTodo(@Args('newTodoData') newTodoData: NewTodoInput): Promise<Todo> {
     const todo = await this.todoService.create(newTodoData);
     pubSub.publish('todoAdded', { todoAdded: todo });
     return todo;
   }
 
-  @Mutation(returns => Boolean)
+  @Mutation((returns) => Boolean)
   async removeTodo(@Args('id') id: string) {
     return this.todoService.remove(id);
   }
 
-  @Subscription(returns => Todo)
+  @Subscription((returns) => Todo)
   todoAdded() {
     return pubSub.asyncIterator('todoAdded');
   }
