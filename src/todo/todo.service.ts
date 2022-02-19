@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { TodoArgs } from './dto/todo.arg';
 import { Todo } from './todo.entity';
@@ -12,25 +12,22 @@ export class TodoService {
     private readonly todoRepository: Repository<Todo>,
   ) {}
 
-  async create(createTodoDto: CreateTodoDto) {
+  create(createTodoDto: CreateTodoDto) {
     const newTodo = new Todo();
     newTodo.title = createTodoDto.title;
     newTodo.description ??= createTodoDto.description;
     return this.todoRepository.save(newTodo);
   }
 
-  async findOne(id: string): Promise<Todo> {
+  findOne(id: string): Promise<Todo> {
     return this.todoRepository.findOne(id);
   }
 
-  async findAll(todoArgs: TodoArgs): Promise<Todo[]> {
-    return this.todoRepository.find({
-      take: todoArgs.take,
-      skip: todoArgs.skip,
-    });
+  findAll(options?: any): Promise<Todo[]> {
+    return this.todoRepository.find(options ?? {});
   }
 
-  async remove(id: string): Promise<boolean> {
+  remove(id: string): Promise<boolean> {
     return !id;
   }
 }

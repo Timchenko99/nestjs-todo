@@ -1,24 +1,32 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, BeforeInsert } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import argon2 from 'argon2';
 import { Todo } from 'src/todo/todo.entity';
+import { Exclude } from 'class-transformer';
 
-@Entity({name: "users"})
+@Entity({ name: 'users' })
 @ObjectType()
-export class UserEntity{
+export class UserEntity {
   @PrimaryGeneratedColumn()
-  @Field(type => ID)
+  @Field((type) => ID)
   id!: string;
 
-  @Column({type: 'varchar', unique: true })
+  @Column({ type: 'varchar', unique: true })
   @Field()
   username!: string;
 
-  @Column({type: 'varchar', unique: true })
+  @Column({ type: 'varchar', unique: true })
   @Field()
   email!: string;
 
-  @Column({type: 'varchar'})
+  @Column({ type: 'varchar' })
+  @Exclude()
   password!: string;
 
   @OneToMany(() => Todo, (todo) => todo.creator)
@@ -31,9 +39,4 @@ export class UserEntity{
   @UpdateDateColumn()
   @Field(() => String)
   updatedOn!: Date;
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await argon2.hash(this.password);
-  }
 }

@@ -10,7 +10,7 @@ export class TodoDto {
 
   description?: string;
 
-  creator: UserDto;
+  authorId: UserDto;
 
   creationDate: Date;
 

@@ -19,24 +19,20 @@ export class UserService {
     if (userInDb)
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
 
-    const newUser: UserEntity = this.userRepository.create({ username, password, email });
+    const newUser: UserEntity = this.userRepository.create({
+      username,
+      password,
+      email,
+    });
 
     return await this.userRepository.save(newUser);
   }
 
-  updateUser(): Promise<UserEntity> {
-
+  findOne(id: string): Promise<UserEntity> {
+    return this.userRepository.findOne(id);
   }
 
-  deleteUser(): Promise<UserEntity> {
-
-  }
-
-  async findOne(id: string): Promise<UserEntity> {
-    return await this.userRepository.findOne(id);
-  }
-
-  async findOneByUsername(username: string): Promise<UserEntity> {
-    return await this.userRepository.findOne({ username: username });
+  findOneByUsername(username: string): Promise<UserEntity> {
+    return this.userRepository.findOne({ username: username });
   }
 }

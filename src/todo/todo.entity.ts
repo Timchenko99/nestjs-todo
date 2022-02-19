@@ -1,12 +1,19 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { User } from 'src/user/user.entity';
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 
-@Entity({name: "todos"})
+@Entity({ name: 'todos' })
 @ObjectType({ description: 'todo' })
 export class Todo {
   @PrimaryGeneratedColumn()
-  @Field(type => ID)
+  @Field((type) => ID)
   id: string;
 
   @Column()
@@ -19,7 +26,7 @@ export class Todo {
 
   @Field()
   @ManyToOne(() => User, (user) => user.todos)
-  creator: User;
+  authorId: User;
 
   @CreateDateColumn()
   @Field(() => String)
